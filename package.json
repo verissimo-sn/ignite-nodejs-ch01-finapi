@@ -1,0 +1,11 @@
+{
+  "name": "ignite-nodejs-ch01-fundamentos",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:verissimo-sn/ignite-nodejs-ch01-fundamentos.git",
+  "author": "verissimo-sn <jose.neto@minu.co>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
