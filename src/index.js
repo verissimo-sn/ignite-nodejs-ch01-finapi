@@ -3,11 +3,11 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-  return res.json({ message: 'Hello' })
+  return res.json({ message: 'Hello wohoo' })
 })
 
 const port = 3333;
 
 app.listen(port, () => {
-  console.log(`server listening on port ${port}`);
+  console.log(`server start on port ${port}`);
 });

@@ -5,7 +5,13 @@
   "repository": "git@github.com:verissimo-sn/ignite-nodejs-ch01-fundamentos.git",
   "author": "verissimo-sn <jose.neto@minu.co>",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
   "dependencies": {
     "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
