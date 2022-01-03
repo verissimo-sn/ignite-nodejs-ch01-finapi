@@ -30,6 +30,18 @@ app.post('/account', (req, res) => {
   return res.status(201).json({ status: 201, error: null, data: [{ id }] });
 });
 
+app.get('/statement/:cpf', (req, res) => {
+  const { cpf } = req.params;
+
+  const customer = customers.find(customer => customer.cpf === cpf);
+
+  if(!customer) {
+    return res.status(400).json({ status: 400, error: 'Customer does not exists !', data: []});
+  }
+
+  return res.status(200).json({ status: 200, error: null, data: customer.statement});
+});
+
 const port = 3333;
 
 app.listen(port, () => {
