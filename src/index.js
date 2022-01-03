@@ -56,13 +56,39 @@ app.post('/account', (req, res) => {
   });
 });
 
-app.get('/statement/', verifyIfExistsAccount, (req, res) => {
+app.get('/statement', verifyIfExistsAccount, (req, res) => {
   const { customer } = req;
 
   return res.status(200).json({
     status: 200,
     error: null,
     data: {statement: customer.statement}
+  });
+});
+
+app.post('/deposit', verifyIfExistsAccount, (req, res) => {
+  const { description, amount } = req.body;
+
+  const { customer } = req;
+
+  const statementOperation = {
+    description,
+    amount,
+    type: 'credit',
+    created_at: new Date(),
+  }
+
+  customer.statement.push(statementOperation);
+
+  return res.status(201).json({
+    status: 201,
+    error: null,
+    data: {
+      customerId: customer.id,
+      statement: {
+        ...statementOperation,
+      }
+    }
   });
 });
 
