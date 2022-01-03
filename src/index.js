@@ -13,7 +13,11 @@ app.post('/account', (req, res) => {
   const customerAlreadyExists = customers.some((customer) => customer.cpf === cpf);
 
   if (customerAlreadyExists) {
-    return res.status(400).json({ status: 400, error: 'Customer Already Exists!', data: [] })
+    return res.status(400).json({
+      status: 400,
+      error: 'Customer Already Exists!',
+      data: []
+    });
   }
 
   const id = uuid();
@@ -27,19 +31,31 @@ app.post('/account', (req, res) => {
 
   customers.push(newAccount);
 
-  return res.status(201).json({ status: 201, error: null, data: [{ id }] });
+  return res.status(201).json({
+    status: 201,
+    error: null,
+    data: [{ id }]
+  });
 });
 
-app.get('/statement/:cpf', (req, res) => {
-  const { cpf } = req.params;
+app.get('/statement/', (req, res) => {
+  const { cpf } = req.headers;
 
   const customer = customers.find(customer => customer.cpf === cpf);
 
   if(!customer) {
-    return res.status(400).json({ status: 400, error: 'Customer not found !', data: []});
+    return res.status(400).json({
+      status: 400,
+      error: 'Customer not found !',
+      data: []
+    });
   }
 
-  return res.status(200).json({ status: 200, error: null, data: customer.statement});
+  return res.status(200).json({
+    status: 200,
+    error: null,
+    data: {statement: customer.statement}
+  });
 });
 
 const port = 3333;
