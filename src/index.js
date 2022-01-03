@@ -36,7 +36,7 @@ app.get('/statement/:cpf', (req, res) => {
   const customer = customers.find(customer => customer.cpf === cpf);
 
   if(!customer) {
-    return res.status(400).json({ status: 400, error: 'Customer does not exists !', data: []});
+    return res.status(400).json({ status: 400, error: 'Customer not found !', data: []});
   }
 
   return res.status(200).json({ status: 200, error: null, data: customer.statement});
