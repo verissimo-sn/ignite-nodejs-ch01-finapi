@@ -9,6 +9,13 @@ const customers = [];
 
 app.post('/account', (req, res) => {
   const { cpf, name } = req.body;
+
+  const customerAlreadyExists = customers.some((customer) => customer.cpf === cpf);
+
+  if (customerAlreadyExists) {
+    return res.status(400).json({ status: 400, error: 'Customer Already Exists!', data: [] })
+  }
+
   const id = uuid();
 
   const newAccount = {
@@ -20,7 +27,7 @@ app.post('/account', (req, res) => {
 
   customers.push(newAccount);
 
-  return res.status(201).json({ status: 201, error: null, data: [] });
+  return res.status(201).json({ status: 201, error: null, data: [{ id }] });
 });
 
 const port = 3333;
