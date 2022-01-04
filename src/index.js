@@ -208,7 +208,20 @@ app.post('/withdraw', verifyIfExistsAccount, (req, res) => {
   });
 });
 
+app.get('/balance', verifyIfExistsAccount, (req, res) => {
+  const { customer } = req;
 
+  const balance = getBalance(customer.statement);
+
+  return res.status(201).json({
+    status: 201,
+    error: null,
+    data: {
+      customerId: customer.id,
+      balance
+    }
+  });
+});
 
 const port = 3333;
 
