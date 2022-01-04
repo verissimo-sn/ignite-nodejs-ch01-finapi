@@ -94,6 +94,18 @@ app.get('/account/', verifyIfExistsAccount, (req, res) => {
   });
 });
 
+app.delete('/account/', verifyIfExistsAccount, (req, res) => {
+  const { customer } = req;
+
+  customers.splice(customer[customer.id], 1);
+
+  return res.status(201).json({
+    status: 201,
+    error: null,
+    data: customers
+  });
+});
+
 app.get('/statement', verifyIfExistsAccount, (req, res) => {
   const { customer } = req;
 
