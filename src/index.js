@@ -82,6 +82,18 @@ app.put('/account/', verifyIfExistsAccount, (req, res) => {
   });
 });
 
+app.get('/account/', verifyIfExistsAccount, (req, res) => {
+  const { customer } = req;
+
+  return res.status(201).json({
+    status: 201,
+    error: null,
+    data: {
+      ...customer
+    }
+  });
+});
+
 app.get('/statement', verifyIfExistsAccount, (req, res) => {
   const { customer } = req;
 
