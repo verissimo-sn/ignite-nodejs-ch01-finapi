@@ -139,6 +139,36 @@ app.post('/withdraw', verifyIfExistsAccount, (req, res) => {
   });
 });
 
+app.get('/statement/date', verifyIfExistsAccount, (req, res) => {
+  const { customer } = req;
+  const { date } = req.query;
+
+  const dateFormat = new Date(date + ' 00:00');
+
+  const statement = customer.statement
+    .filter(statement => statement.created_at.toDateString() === new Date(dateFormat).toDateString());
+
+  if(!statement[0]) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Statement not found',
+      data: {
+        customerId: customer.id,
+        statement: []
+      }
+    });
+  }
+
+  return res.status(200).json({
+    status: 200,
+    error: null,
+    data: {
+      customerId: customer.id,
+      statement: statement
+    }
+  });
+});
+
 const port = 3333;
 
 app.listen(port, () => {
