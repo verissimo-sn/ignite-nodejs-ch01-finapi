@@ -25,9 +25,20 @@ const verifyIfExistsAccount = (req, res, next) => {
   return next();
 }
 
+const getBalance = (statement) => {
+  const balance = statement.reduce((acc, operation) => {
+    if(operation.type === 'credit') {
+      return acc + operation.amount;
+    } else {
+      return acc - operation.amount;
+    }
+  }, 0);
+
+  return balance;
+}
+
 app.post('/account', (req, res) => {
   const { cpf, name } = req.body;
-
   const customerAlreadyExists = customers.some((customer) => customer.cpf === cpf);
 
   if (customerAlreadyExists) {
@@ -68,7 +79,6 @@ app.get('/statement', verifyIfExistsAccount, (req, res) => {
 
 app.post('/deposit', verifyIfExistsAccount, (req, res) => {
   const { description, amount } = req.body;
-
   const { customer } = req;
 
   const statementOperation = {
@@ -88,6 +98,43 @@ app.post('/deposit', verifyIfExistsAccount, (req, res) => {
       statement: {
         ...statementOperation,
       }
+    }
+  });
+});
+
+app.post('/withdraw', verifyIfExistsAccount, (req, res) => {
+  const { description, amount } = req.body;
+  const { customer } = req;
+
+  const balance = getBalance(customer.statement);
+
+  if (balance < amount) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Insufficient funds!',
+      data: {
+        customerId: customer.id,
+      }
+    });
+  }
+
+  const statementOperation = {
+    description,
+    amount,
+    type: 'debit',
+    created_at: new Date(),
+  }
+
+  customer.statement.push(statementOperation);
+
+  return res.status(201).json({
+    status: 201,
+    error: null,
+    data: {
+      customerId: customer.id,
+      statement: {
+        ...statementOperation,
+      },
     }
   });
 });
